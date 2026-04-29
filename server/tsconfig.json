@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    // File Layout
+    "rootDir": "./src", // Ensures your TS files stay in /src
+    "outDir": "./dist", // Keeps your compiled JS separate
+
+    // Environment Settings
+    "module": "NodeNext", // Best for modern Node ESM
+    "target": "ESNext",
+    "lib": ["ESNext"], // Adds modern JS features (like Array.at)
+    "types": ["node"], // Tells TS to look for Node.js definitions
+
+    // Other Outputs
+    "sourceMap": true, // Essential for debugging
+    "declaration": true, // Generates .d.ts files for others to use your types
+    "declarationMap": true,
+
+    // Stricter Typechecking
+    "noUncheckedIndexedAccess": true, // Prevents errors when accessing arrays/objects
+    "exactOptionalPropertyTypes": true,
+
+    // Style Options (Highly Recommended for Clean Code)
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    // Recommended Options
+    "strict": true,
+    "verbatimModuleSyntax": true, // Keeps imports/exports predictable
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true // Speeds up builds by skipping node_modules checks
+
+    // Note: If you aren't using React, you can safely remove the "jsx" line.
+  },
+  "include": ["src/**/*"], // Only compile what's in /src
+  "exclude": ["node_modules", "**/*.spec.ts"] // Keep the noise out
+}
