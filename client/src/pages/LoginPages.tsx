@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { mockUsers } from '../data/usersData';
+import React, { useState } from "react";
+import { mockUsers } from "../data/usersData";
 
 function LoginPages() {
   const [id, setId] = useState(0);
-  const [username, setUsername] = useState('');
-  const [message, setMessage] = useState('');
+  const [username, setUsername] = useState("");
+  const [message, setMessage] = useState("");
 
   function checkUser(id: number, username: string): boolean {
     const isUser = mockUsers.find(
@@ -15,7 +15,7 @@ function LoginPages() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const isValid = checkUser(id, username);
-    setMessage(isValid ? 'Login successful!' : 'Invalid ID or username.');
+    setMessage(isValid ? "Login successful!" : "Invalid ID or username.");
   }
 
   return (
