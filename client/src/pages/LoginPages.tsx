@@ -1,31 +1,38 @@
 import React, { useState } from 'react';
 import { mockUsers } from '../data/usersData';
+import { useNavigate } from 'react-router-dom';
 
-function LoginPages() {
-  const [id, setId] = useState(0);
+function LoginPage() {
+  const [id, setId] = useState('');
   const [username, setUsername] = useState('');
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
-  function checkUser(id: number, username: string): boolean {
-    const isUser = mockUsers.find(
+  function checkUser(id: string, username: string) {
+    return mockUsers.find(
       (user) => user.id === id && user.username === username,
     );
-    return isUser !== undefined;
   }
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const isValid = checkUser(id, username);
-    setMessage(isValid ? 'Login successful!' : 'Invalid ID or username.');
+    const user = checkUser(id, username);
+    if (user) {
+      localStorage.setItem('userId', user.id);
+      navigate('/dashboard');
+    } else {
+      setMessage('Invalid ID or username.');
+    }
   }
 
   return (
     <>
       <h1>Login</h1>
+
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="id"
-          onChange={(e) => setId(Number(e.target.value))}
+          onChange={(e) => setId(e.target.value)}
         />
         <input
           type="text"
@@ -39,4 +46,4 @@ function LoginPages() {
   );
 }
 
-export default LoginPages;
+export default LoginPage;
