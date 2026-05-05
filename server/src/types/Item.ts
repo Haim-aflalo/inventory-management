@@ -5,3 +5,4 @@ export interface InventoryItem {
   quantity: number;
 }
 
+// revoir l'architecture du code entrer chaque type avec ses fonctions liees 
