@@ -1,11 +1,14 @@
 import { useState } from 'react';
-import { mockInventory } from '../data/itemsData';
 import type { InventoryItem } from '../data/itemsData';
 
-function ItemsTable() {
-  const [inventory, setInventory] = useState<InventoryItem[]>(mockInventory);
-  const [editingItem, setEditingItem] = useState<InventoryItem | null>(null);
+interface ItemsTableProps {
+  inventory: InventoryItem[];
+  onDelete: (id: string) => void;
+  onEdit: (item: InventoryItem) => void;
+}
 
+function ItemsTable({ inventory, onDelete, onEdit }: ItemsTableProps) {
+  const [editingItem, setEditingItem] = useState<InventoryItem | null>(null);
   const [name, setName] = useState('');
   const [quantity, setQuantity] = useState(0);
   const [price, setPrice] = useState(0);
@@ -29,32 +32,30 @@ function ItemsTable() {
   }
 
   function deleteItem(id: string) {
-    setInventory((prev) => prev.filter((item) => item.id !== id));
+    onDelete(id);
   }
 
   function handleSave(e: React.FormEvent) {
     e.preventDefault();
     if (!editingItem) return;
 
-    setInventory((prev) =>
-      prev.map((item) =>
-        item.id === editingItem.id ? { ...item, name, quantity, price } : item,
-      ),
-    );
+    const updatedItem = { ...editingItem, name, quantity, price };
+    onEdit(updatedItem);
     setEditingItem(null);
   }
 
   return (
-    <>
+    <div className="table-container">
       <section className="items-table">
-        <p>
-          <strong>Total Items:</strong> ({totalItems}) |
-          <strong> Out of Stock:</strong> ({outOfStockCount}) |
-          <strong> Total Inventory Value:</strong> (${totalValue.toFixed(2)})
-        </p>
-
+        <div className="table-infos">
+          <p className="table-summary">
+            <strong>Total Items:</strong> {totalItems} |
+            <strong> Out of Stock:</strong> {outOfStockCount} |
+            <strong> Total Inventory Value:</strong> {totalValue.toFixed(2)} $
+          </p>
+        </div>
         <table>
-          <thead>
+          <thead className="infos-header">
             <tr>
               <th>ID</th>
               <th>Name</th>
@@ -63,7 +64,7 @@ function ItemsTable() {
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="infos-value">
             {inventory.map((item) => (
               <tr key={item.id}>
                 <td>{item.id}</td>
@@ -102,14 +103,16 @@ function ItemsTable() {
               onChange={(e) => setPrice(Number(e.target.value))}
               placeholder="Price"
             />
-            <button type="submit">Save</button>
-            <button type="button" onClick={() => setEditingItem(null)}>
-              Cancel
-            </button>
+            <div className="button-group">
+              <button type="submit">Save</button>
+              <button type="button" onClick={() => setEditingItem(null)}>
+                Cancel
+              </button>
+            </div>
           </form>
         </section>
       )}
-    </>
+    </div>
   );
 }
 

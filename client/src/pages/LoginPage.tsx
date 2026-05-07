@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { mockUsers } from '../data/usersData';
 import type { User } from '../data/usersData';
 import { useNavigate } from 'react-router-dom';
+import '../styles/Login.css';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
@@ -28,22 +29,24 @@ function LoginPage() {
   }
 
   return (
-    <div className="login-form">
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="username"
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Login</button>
-       <p>{message}</p>
-      </form>
+    <div className="login-page">
+      <div className="login-container">
+        <h1 className="login-title">Login</h1>
+        <form className="login-form" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="username"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button type="submit">Login</button>
+          <p>{message}</p>
+        </form>
+      </div>
     </div>
   );
 }
