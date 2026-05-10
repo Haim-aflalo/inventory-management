@@ -1,6 +1,8 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import { userRoutes } from './routes/userRouter.js';
+import jwt from '@fastify/jwt';
+import 'dotenv/config';
 
 const fastify = Fastify();
 fastify.register(cors, {
@@ -8,6 +10,10 @@ fastify.register(cors, {
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
 });
 fastify.register(userRoutes, { prefix: '/users' });
+
+fastify.register(jwt, {
+  secret: process.env.JWT_SECRET as string 
+});
 
 const start = async () => {
   try {

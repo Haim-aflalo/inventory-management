@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
-import type { User } from './types/user.js';
-import type { InventoryItem } from './types/Item.js';
+import type { User } from '../types/user.js';
+import type { InventoryItem } from '../types/Item.js';
 
 const readFile = async (path: string) => {
   return JSON.parse(await fs.readFile(path, 'utf-8'));

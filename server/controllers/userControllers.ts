@@ -29,10 +29,12 @@ const checkUserController = async (
 ) => {
   try {
     const { username, password } = request.body;
-    const result = await checkUserService(username, password);
-    return reply.status(200).send({ 
+    await checkUserService(username, password);
+    const payload = { username };
+    const token = request.server.jwt.sign(payload);
+    return reply.status(200).send({
       message: 'User logged in successfully',
-      data: result 
+      data: token,
     });
   } catch (error: any) {
     request.log.error(error);

@@ -16,6 +16,8 @@ function LoginPage() {
         password,
       });
       if (response.status === 200) {
+        const token = response.data.data;
+        localStorage.setItem('token', token);
         navigate('/dashboard');
       }
     } catch (error: any) {

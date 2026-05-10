@@ -1,4 +1,4 @@
-import { readFile, writeFile } from '../fileTools.js';
+import { readFile, writeFile } from '../utils/fileTools.js';
 import type { User } from '../types/user.js';
 
 const writeUser = async (newUser: User) => {
