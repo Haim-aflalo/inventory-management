@@ -1,4 +1,4 @@
-import type { InventoryItem } from '../types/Item.js';
+import type { InventoryItem } from '../../types/Item.js';
 
 export function calculateTotalValue(items: InventoryItem[]): number {
   return items.reduce((total, item) => total + item.price * item.quantity, 0);

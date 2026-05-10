@@ -1,40 +1,30 @@
 {
   "compilerOptions": {
-    // File Layout
-    "rootDir": "./src", // Ensures your TS files stay in /src
-    "outDir": "./dist", // Keeps your compiled JS separate
-
-    // Environment Settings
-    "module": "NodeNext", // Best for modern Node ESM
+    /* Cible et Environnement */
     "target": "ESNext",
-    "lib": ["ESNext"], // Adds modern JS features (like Array.at)
-    "types": ["node"], // Tells TS to look for Node.js definitions
+    "lib": ["ESNext"],
+    "module": "CommonJS",
 
-    // Other Outputs
-    "sourceMap": true, // Essential for debugging
-    "declaration": true, // Generates .d.ts files for others to use your types
-    "declarationMap": true,
+    /* Résolution de modules (La version moderne de 'node') */
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": false, // Empêche de mettre .ts dans les imports
+    "resolveJsonModule": true,
+    "allowJs": true,
 
-    // Stricter Typechecking
-    "noUncheckedIndexedAccess": true, // Prevents errors when accessing arrays/objects
-    "exactOptionalPropertyTypes": true,
-
-    // Style Options (Highly Recommended for Clean Code)
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-
-    // Recommended Options
+    /* Interopérabilité et Sortie */
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "verbatimModuleSyntax": true, // Keeps imports/exports predictable
-    "isolatedModules": true,
-    "noUncheckedSideEffectImports": true,
-    "moduleDetection": "force",
-    "skipLibCheck": true // Speeds up builds by skipping node_modules checks
+    "skipLibCheck": true,
 
-    // Note: If you aren't using React, you can safely remove the "jsx" line.
+    /* Chemins */
+    "rootDir": ".",
+    "outDir": "../dist",
+
+    /* On retire baseUrl car 'Bundler' n'en a plus besoin pour les imports relatifs */
+    "sourceMap": true,
+    "noEmit": false
   },
-  "include": ["src/**/*"], // Only compile what's in /src
-  "exclude": ["node_modules", "**/*.spec.ts"] // Keep the noise out
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
 }

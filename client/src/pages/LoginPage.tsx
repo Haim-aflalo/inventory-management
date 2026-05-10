@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { mockUsers } from '../data/usersData';
-import type { User } from '../data/usersData';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../styles/Login.css';
 
 function LoginPage() {
@@ -10,21 +9,27 @@ function LoginPage() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  function checkUser(username: string, password: string): User | undefined {
-    const isUser = mockUsers.find(
-      (user) => user.username === username && user.password === password,
-    );
-    return isUser;
+  async function checkUser(username: string, password: string) {
+    try {
+      const response = await axios.post('http://localhost:3000/users/login', {
+        username,
+        password,
+      });
+      if (response.status === 200) {
+        navigate('/dashboard');
+      }
+    } catch (error: any) {
+      console.error(error.message);
+      setMessage('Invalid username or password');
+    }
   }
 
-  function handleSubmit(e: { preventDefault: () => void }) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const isValid = checkUser(username, password);
-    if (isValid) {
-      localStorage.setItem('userId', isValid.id);
-      navigate('/dashboard');
+    if (username && password) {
+      checkUser(username, password);
     } else {
-      setMessage('Invalid username or password !');
+      setMessage('Veuillez remplir tous les champs !');
     }
   }
 

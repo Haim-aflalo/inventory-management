@@ -2,9 +2,9 @@
   "name": "inventory-mangement",
   "version": "1.0.0",
   "description": "��#\u0000 \u0000i\u0000n\u0000v\u0000e\u0000n\u0000t\u0000o\u0000r\u0000y\u0000-\u0000m\u0000a\u0000n\u0000a\u0000g\u0000e\u0000m\u0000e\u0000n\u0000t\u0000\r\u0000 \u0000",
-  "main": "index.js",
+  "main": "app.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "npx tsx watch app.ts"
   },
   "repository": {
     "type": "git",
@@ -19,11 +19,14 @@
   },
   "homepage": "https://github.com/Haim-aflalo/inventory-management#readme",
   "devDependencies": {
-    "@types/node": "^25.6.0",
+    "@types/node": "^25.6.2",
+    "ts-node": "^10.9.2",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3"
   },
   "dependencies": {
-    "fastify": "^5.8.5"
+    "@fastify/cors": "^11.2.0",
+    "fastify": "^5.8.5",
+    "nodemon": "^3.1.14"
   }
 }
