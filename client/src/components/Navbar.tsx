@@ -19,3 +19,6 @@ function Navbar({ setSearch, user }: NavbarProps) {
   );
 }
 export default Navbar;
+
+
+//integrer les types dans un fichier separe

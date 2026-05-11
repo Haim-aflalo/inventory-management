@@ -43,3 +43,7 @@ function DashboardPage() {
 }
 
 export default DashboardPage;
+
+
+//applique context sur les elements
+//arrow function 

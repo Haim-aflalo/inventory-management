@@ -1,20 +1,20 @@
-import { useState } from 'react';
-import type { InventoryItem } from '../data/itemsData';
+import { useState } from "react";
+import type { InventoryItem } from "../data/itemsData";
 
 interface SidebarProps {
   onAdd: (newItem: InventoryItem) => void;
 }
 
 function Sidebar({ onAdd }: SidebarProps) {
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [quantity, setQuantity] = useState(0);
   const [flag, setFlag] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     if (!name || price <= 0 || quantity < 0) {
       return;
+      //setMessqge for the user
     }
 
     const newItem: InventoryItem = {
@@ -23,22 +23,18 @@ function Sidebar({ onAdd }: SidebarProps) {
       price,
       quantity,
     };
+
     onAdd(newItem);
 
-    setName('');
+    setName("");
     setPrice(0);
     setQuantity(0);
     setFlag(false);
+    //creer une finction de reset
   };
   return (
     <div className="sidebar-container">
-      <button
-        onClick={() => {
-          setFlag(true);
-        }}
-      >
-        Add Item
-      </button>
+      <button onClick={() => setFlag(true)}>Add Item</button>
       {flag && (
         <section className="item-form">
           <form onSubmit={handleSubmit}>
@@ -74,3 +70,4 @@ function Sidebar({ onAdd }: SidebarProps) {
 }
 
 export default Sidebar;
+//changer en components le form pour ajouter un element

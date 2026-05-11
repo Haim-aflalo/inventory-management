@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import type { InventoryItem } from '../data/itemsData';
+import { useState } from "react";
+import type { InventoryItem } from "../data/itemsData";
 
 interface ItemsTableProps {
   inventory: InventoryItem[];
@@ -9,7 +9,7 @@ interface ItemsTableProps {
 
 function ItemsTable({ inventory, onDelete, onEdit }: ItemsTableProps) {
   const [editingItem, setEditingItem] = useState<InventoryItem | null>(null);
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [quantity, setQuantity] = useState(0);
   const [price, setPrice] = useState(0);
 
@@ -31,15 +31,9 @@ function ItemsTable({ inventory, onDelete, onEdit }: ItemsTableProps) {
     setPrice(item.price);
   }
 
-  function deleteItem(id: string) {
-    onDelete(id);
-  }
-
-  function handleSave(e: React.FormEvent) {
-    e.preventDefault();
+  function handleSave() {
     if (!editingItem) return;
-
-    const updatedItem = { ...editingItem, name, quantity, price };
+    const updatedItem = { ...editingItem, name, quantity, price }; //ajpouter prev
     onEdit(updatedItem);
     setEditingItem(null);
   }
@@ -51,7 +45,7 @@ function ItemsTable({ inventory, onDelete, onEdit }: ItemsTableProps) {
           <p className="table-summary">
             <strong>Total Items:</strong> {totalItems} |
             <strong> Out of Stock:</strong> {outOfStockCount} |
-            <strong> Total Inventory Value:</strong> {totalValue.toFixed(2)} $
+            <strong> Total Inventory Value:</strong> {totalValue} $
           </p>
         </div>
         <table>
@@ -73,7 +67,7 @@ function ItemsTable({ inventory, onDelete, onEdit }: ItemsTableProps) {
                 <td>${item.price}</td>
                 <td>
                   <button onClick={() => handleEditClick(item)}>edit</button>
-                  <button onClick={() => deleteItem(item.id)}>delete</button>
+                  <button onClick={() => onDelete(item.id)}>delete</button>
                 </td>
               </tr>
             ))}
@@ -117,3 +111,6 @@ function ItemsTable({ inventory, onDelete, onEdit }: ItemsTableProps) {
 }
 
 export default ItemsTable;
+
+//gerer les keys en liste
+//ajouter destructuring
