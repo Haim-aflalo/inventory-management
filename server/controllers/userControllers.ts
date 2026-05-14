@@ -17,9 +17,11 @@ const addUserController = async (
     const { user } = request.body;
     await addUserService(user);
     reply.status(201).send('user added successfully');
-  } catch (error) {
+  } catch (error: unknown) {
     request.log.error(error);
-    reply.status(500).send({ error: 'Internal Server Error' });
+    const errorMsg =
+      error instanceof Error ? error.message : 'An error occurred';
+    console.error(errorMsg);
   }
 };
 
@@ -29,20 +31,31 @@ const checkUserController = async (
 ) => {
   try {
     const { username, password } = request.body;
+
     await checkUserService(username, password);
+
     const payload = { username };
     const token = request.server.jwt.sign(payload);
-    return reply.status(200).send({
-      message: 'User logged in successfully',
-      data: token,
-    });
-  } catch (error: any) {
+    return reply
+      .setCookie('token', token, {
+        path: '/',
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 3600 * 24,
+      })
+      .status(200)
+      .send({
+        message: 'User logged in successfully',
+        user: { username },
+      });
+  } catch (error: unknown) {
     request.log.error(error);
-    if (error.message === 'User not found or password incorrect') {
-      return reply.status(401).send({ error: 'Invalid credentials' });
-    }
-    return reply.status(500).send({ error: 'Internal Server Error' });
+    const errorMsg =
+      error instanceof Error ? error.message : 'An error occurred';
+    console.error(errorMsg);
   }
+  return reply.status(500).send({ error: 'Internal Server Error' });
 };
 
 export { addUserController, checkUserController };

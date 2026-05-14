@@ -1,75 +1,160 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import "../styles/Login.css";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import apiClient from '../api/apiClient';
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Container,
+  Paper,
+  InputAdornment,
+  IconButton,
+  Alert,
+} from '@mui/material';
 
-function LoginPage() {
-  const [username, setUsername] = useState("");
-  const [message, setMessage] = useState("");
-  const [password, setPassword] = useState("");
+import { Visibility, VisibilityOff, Login } from '@mui/icons-material';
+
+interface LoginForm {
+  username: string;
+  password: string;
+}
+
+const LoginPage = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  async function checkUser(username: string, password: string) {
-    try {
-      const response = await axios.post("http://localhost:3000/users/login", {
-        username,
-        password,
-      });
-      if (response.status === 200) {
-        const token = response.data.data;
-        localStorage.setItem("token", token);
-        navigate("/dashboard");
-      }
-    } catch (error: any) {
-      console.error(error.message);
-      setMessage("Invalid username or password");
-    }
-  }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginForm>();
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (username && password) {
-      checkUser(username, password);
-    } else {
-      setMessage("Veuillez remplir tous les champs !");
+  const handleAuthSubmit = async (data: LoginForm) => {
+    try {
+      setLoginError(null);
+      const authResponse = await apiClient.post('/users/login', data);
+      if (authResponse.status === 200) {
+        navigate('/dashboard');
+      }
+    } catch (error: unknown) {
+      const errorMsg =
+        error instanceof Error ? error.message : 'An error occurred';
+      console.error(errorMsg);
+      setLoginError('username or password missing are incorect');
     }
-  }
+  };
 
   return (
-    <div className="login-page">
-      <div className="login-container">
-        <h1 className="login-title">Login</h1>
-        <form className="login-form" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="username"
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button type="submit">Login</button>
-          <p>{message}</p>
-        </form>
-      </div>
-    </div>
+    <Container
+      component="main"
+      maxWidth="xs"
+      sx={{
+        marginTop: (theme) => theme.spacing(20),
+      }}
+    >
+      <Paper
+        elevation={3}
+        sx={{
+          marginTop: (theme) => theme.spacing(8),
+          padding: 4,
+          borderRadius: 2,
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography
+            component="h1"
+            variant="h5"
+            sx={{ mb: 3, fontWeight: 700 }}
+          >
+            Login
+          </Typography>
+          {loginError && (
+            <Alert severity="error" sx={{ width: '100%', mb: 2 }}>
+              {loginError}
+            </Alert>
+          )}
+          <Box
+            component="form"
+            onSubmit={handleSubmit(handleAuthSubmit)}
+            noValidate
+            sx={{ width: '100%' }}
+          >
+            <TextField
+              {...register('username', {
+                required: 'username is required',
+              })}
+              margin="normal"
+              required
+              fullWidth
+              label="Username"
+              autoComplete="username"
+              autoFocus
+              error={!!errors.username}
+              helperText={errors.username?.message}
+            />
+
+            <TextField
+              {...register('password', {
+                required: 'password is required',
+              })}
+              margin="normal"
+              required
+              fullWidth
+              label="Password"
+              type={showPassword ? 'text' : 'password'}
+              autoComplete="current-password"
+              error={!!errors.password}
+              helperText={errors.password?.message}
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowPassword(!showPassword)}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
+              }}
+            />
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              disabled={isSubmitting}
+              startIcon={<Login />}
+              sx={{
+                mt: 3,
+                mb: 2,
+                py: 1.5,
+                textTransform: 'none',
+                fontSize: '1rem',
+              }}
+            >
+              {isSubmitting ? 'Connexion...' : 'Sign In'}
+            </Button>
+          </Box>
+        </Box>
+      </Paper>
+    </Container>
   );
-}
+};
 
 export default LoginPage;
 
-//revoir l'architecture du style
-//utiliser mui a la place du css
-//refaire tout le css avec mui
-//refator pour arrow functions
-//envoyer les api et url en env
-//revoir les namig en precis max
-//revoir bien ls jwt
-//no ANY
-//voir les bibliotheque pour un surplus de states
-//revoir comment faire pour faire sans preventdefault
 //check responsive
 //apprendre bien rem
 //aprendre les variables COMME IL FAUT en css

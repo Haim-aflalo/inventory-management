@@ -1,49 +1,22 @@
-import { useState } from 'react';
 import ItemsTable from '../components/ItemsTable';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
-import { mockUsers } from '../data/usersData';
-import { mockInventory } from '../data/itemsData';
-import type { InventoryItem } from '../data/itemsData';
-import type { User } from '../data/usersData';
-import '../styles/Dashboard.css';
+import { InventoryProvider } from '../contexts/InventoryContext';
 
-function DashboardPage() {
-  const [items, setItems] = useState<InventoryItem[]>(mockInventory);
-  const [search, setSearch] = useState('');
-  const userId = localStorage.getItem('userId');
-  const user: User | undefined = mockUsers.find((u) => u.id === userId);
-  const filteredItems = items.filter((item) =>
-    item.name.toLowerCase().includes(search),
-  );
-  const addItem = (newItem: InventoryItem) => {
-    setItems((prev) => [...prev, newItem]);
-  };
-  const deleteItem = (id: string) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
-  };
-  const editItem = (updatedItem: InventoryItem) => {
-    setItems((prev) =>
-      prev.map((item) => (item.id === updatedItem.id ? updatedItem : item)),
-    );
-  };
+
+const DashboardPage = () => {
   return (
-    <div className="dashboard-page">
-      <Navbar setSearch={setSearch} user={user} />
-      <div className="dashboard-content">
-        <Sidebar onAdd={addItem} />
-        <ItemsTable
-          inventory={filteredItems}
-          onDelete={deleteItem}
-          onEdit={editItem}
-        />
+    <InventoryProvider>
+      <div className="dashboard-page">
+        <Navbar />
+        <div className="dashboard-content">
+          <Sidebar />
+          <ItemsTable />
+        </div>
       </div>
-    </div>
+    </InventoryProvider>
   );
-}
+};
 
 export default DashboardPage;
 
-
-//applique context sur les elements
-//arrow function 

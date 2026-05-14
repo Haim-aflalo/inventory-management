@@ -1,73 +1,60 @@
-import { useState } from "react";
-import type { InventoryItem } from "../data/itemsData";
+import { useState } from 'react';
+import { Box, Drawer, Button, Divider, Dialog } from '@mui/material';
+import { Add as AddIcon } from '@mui/icons-material';
+import ItemForm from './ItemForm';
 
-interface SidebarProps {
-  onAdd: (newItem: InventoryItem) => void;
-}
+const drawerWidth = 240;
 
-function Sidebar({ onAdd }: SidebarProps) {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
-  const [quantity, setQuantity] = useState(0);
-  const [flag, setFlag] = useState(false);
+const Sidebar = () => {
+  const [displayForm, setDisplayForm] = useState(false);
 
-  const handleSubmit = () => {
-    if (!name || price <= 0 || quantity < 0) {
-      return;
-      //setMessqge for the user
-    }
-
-    const newItem: InventoryItem = {
-      id: Date.now().toString(),
-      name,
-      price,
-      quantity,
-    };
-
-    onAdd(newItem);
-
-    setName("");
-    setPrice(0);
-    setQuantity(0);
-    setFlag(false);
-    //creer une finction de reset
-  };
   return (
-    <div className="sidebar-container">
-      <button onClick={() => setFlag(true)}>Add Item</button>
-      {flag && (
-        <section className="item-form">
-          <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Name"
-            />
-            <input
-              type="number"
-              value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
-              placeholder="Quantity"
-            />
-            <input
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(Number(e.target.value))}
-              placeholder="Price"
-            />
-            <div className="button-group">
-              <button type="submit">Add</button>
-              <button type="button" onClick={() => setFlag(false)}>
-                Cancel
-              </button>
-            </div>
-          </form>
-        </section>
-      )}
-    </div>
+    <Box sx={{ display: 'flex' }}>
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            boxSizing: 'border-box',
+            bgcolor: '#121212',
+            color: 'white',
+            borderRight: '1px solid rgba(255, 255, 255, 0.12)',
+          },
+        }}
+      >
+        <Box sx={{ height: 64 }} />
+
+        <Box sx={{ overflow: 'auto', p: 2 }}>
+          <Button
+            variant="contained"
+            fullWidth
+            startIcon={<AddIcon />}
+            onClick={() => setDisplayForm(true)}
+            sx={{
+              textTransform: 'none',
+              borderRadius: 2,
+              py: 1,
+            }}
+          >
+            Add New Item
+          </Button>
+        </Box>
+
+        <Divider sx={{ bgcolor: 'rgba(255, 255, 255, 0.12)' }} />
+      </Drawer>
+
+      <Dialog
+        open={displayForm}
+        onClose={() => setDisplayForm(false)}
+        fullWidth
+        maxWidth="sm"
+      >
+        <ItemForm closeForm={() => setDisplayForm(false)} />
+      </Dialog>
+    </Box>
   );
-}
+};
 
 export default Sidebar;
-//changer en components le form pour ajouter un element
