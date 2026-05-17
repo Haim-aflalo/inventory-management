@@ -1,6 +1,5 @@
 import { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
-
 import { mockInventory } from '../data/itemsData';
 import type { InventoryItem } from '../data/itemsData';
 

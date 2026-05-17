@@ -127,7 +127,7 @@ const ItemsTable = () => {
       </TableContainer>
 
       <Dialog
-        open={Boolean(editingItem)}
+        open={!!editingItem}
         onClose={() => setEditingItem(null)}
         fullWidth
         maxWidth="sm"
@@ -142,3 +142,8 @@ const ItemsTable = () => {
 };
 
 export default ItemsTable;
+
+
+// no html tags
+// warning dry
+//

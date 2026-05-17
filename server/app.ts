@@ -34,3 +34,7 @@ const start = async () => {
 };
 
 start();
+
+
+//leurn cors
+ 

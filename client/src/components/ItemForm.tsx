@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import type { SubmitHandler } from 'react-hook-form';
-import { useInventory } from '../contexts/InventoryContext';
-import type { InventoryItem } from '../data/itemsData';
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import type { SubmitHandler } from "react-hook-form";
+import { useInventory } from "../contexts/InventoryContext";
+import type { InventoryItem } from "../data/itemsData";
 import {
   TextField,
   Button,
@@ -10,8 +10,8 @@ import {
   DialogContent,
   DialogActions,
   Stack,
-} from '@mui/material';
-
+} from "@mui/material";
+import { itemFormStyles } from "../styles/muiStyle";
 interface ItemFormData {
   name: string;
   quantity: number;
@@ -36,22 +36,18 @@ const ItemForm = ({ closeForm, initialData }: ItemFormProps) => {
 
   useEffect(() => {
     if (initialData) {
-      reset({
-        name: initialData.name,
-        quantity: initialData.quantity,
-        price: initialData.price,
-      });
+      reset(initialData);
     } else {
-      reset({ name: '', quantity: 0, price: 0 });
+      reset({ name: "", quantity: 0, price: 0 });
     }
   }, [initialData, reset]);
 
   const onSubmit: SubmitHandler<ItemFormData> = (data) => {
     if (isEditMode && initialData) {
-      editItem({ ...initialData, ...data });
+      editItem({ id: initialData.id, ...data });
     } else {
       addItem({
-        id: Date.now().toString(),
+        id: Date.now().toString(),//! This is a simple way to generate a unique ID. In a real app, you'd want something more robust.
         ...data,
       });
     }
@@ -61,15 +57,15 @@ const ItemForm = ({ closeForm, initialData }: ItemFormProps) => {
 
   return (
     <>
-      <DialogTitle sx={{ fontWeight: 'bold' }}>
-        {isEditMode ? 'Edit Product' : 'Add New Product'}
+      <DialogTitle sx={itemFormStyles.dialogTitleStyle}>
+        {isEditMode ? "Edit Product" : "Add New Product"}
       </DialogTitle>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent dividers>
-          <Stack spacing={3} sx={{ mt: 1 }}>
+          <Stack spacing={3} sx={itemFormStyles.stackStyle}>
             <TextField
-              {...register('name', { required: 'Name is required' })}
+              {...register("name", { required: "Name is required" })}
               label="Item Name"
               fullWidth
               error={!!errors.name}
@@ -78,9 +74,9 @@ const ItemForm = ({ closeForm, initialData }: ItemFormProps) => {
             />
 
             <TextField
-              {...register('quantity', {
-                required: 'Quantity is required',
-                min: { value: 0, message: 'Cannot be negative' },
+              {...register("quantity", {
+                required: "Quantity is required",
+                min: { value: 0, message: "Cannot be negative" },
                 valueAsNumber: true,
               })}
               label="Quantity"
@@ -91,14 +87,14 @@ const ItemForm = ({ closeForm, initialData }: ItemFormProps) => {
             />
 
             <TextField
-              {...register('price', {
-                required: 'Price is required',
-                min: { value: 0, message: 'Cannot be negative' },
+              {...register("price", {
+                required: "Price is required",
+                min: { value: 0, message: "Cannot be negative" },
                 valueAsNumber: true,
               })}
               label="Price ($)"
               type="number"
-              slotProps={{ htmlInput: { step: '0.01' } }}
+              slotProps={{ htmlInput: { step: "0.01" } }}
               fullWidth
               error={!!errors.price}
               helperText={errors.price?.message}
@@ -116,7 +112,7 @@ const ItemForm = ({ closeForm, initialData }: ItemFormProps) => {
             color="primary"
             sx={{ px: 4 }}
           >
-            {isEditMode ? 'Save Changes' : 'Confirm Add'}
+            {isEditMode ? "Save Changes" : "Confirm Add"}
           </Button>
         </DialogActions>
       </form>
@@ -125,3 +121,6 @@ const ItemForm = ({ closeForm, initialData }: ItemFormProps) => {
 };
 
 export default ItemForm;
+
+
+//learn mui with folders separate

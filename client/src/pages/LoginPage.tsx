@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import apiClient from '../api/apiClient';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import apiClient from "../api/apiClient";
 import {
   Box,
   TextField,
@@ -12,9 +12,9 @@ import {
   InputAdornment,
   IconButton,
   Alert,
-} from '@mui/material';
+} from "@mui/material";
 
-import { Visibility, VisibilityOff, Login } from '@mui/icons-material';
+import { Visibility, VisibilityOff, Login } from "@mui/icons-material";
 
 interface LoginForm {
   username: string;
@@ -35,15 +35,15 @@ const LoginPage = () => {
   const handleAuthSubmit = async (data: LoginForm) => {
     try {
       setLoginError(null);
-      const authResponse = await apiClient.post('/users/login', data);
+      const authResponse = await apiClient.post("/users/login", data);
       if (authResponse.status === 200) {
-        navigate('/dashboard');
+        navigate("/dashboard");
       }
     } catch (error: unknown) {
       const errorMsg =
-        error instanceof Error ? error.message : 'An error occurred';
+        error instanceof Error ? error.message : "An error occurred";
       console.error(errorMsg);
-      setLoginError('username or password missing are incorect');
+      setLoginError("username or password missing are incorect");
     }
   };
 
@@ -65,9 +65,9 @@ const LoginPage = () => {
       >
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
           <Typography
@@ -78,7 +78,7 @@ const LoginPage = () => {
             Login
           </Typography>
           {loginError && (
-            <Alert severity="error" sx={{ width: '100%', mb: 2 }}>
+            <Alert severity="error" sx={{ width: "100%", mb: 2 }}>
               {loginError}
             </Alert>
           )}
@@ -86,11 +86,11 @@ const LoginPage = () => {
             component="form"
             onSubmit={handleSubmit(handleAuthSubmit)}
             noValidate
-            sx={{ width: '100%' }}
+            sx={{ width: "100%" }}
           >
             <TextField
-              {...register('username', {
-                required: 'username is required',
+              {...register("username", {
+                required: "username is required",
               })}
               margin="normal"
               required
@@ -103,14 +103,14 @@ const LoginPage = () => {
             />
 
             <TextField
-              {...register('password', {
-                required: 'password is required',
+              {...register("password", {
+                required: "password is required",
               })}
               margin="normal"
               required
               fullWidth
               label="Password"
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               autoComplete="current-password"
               error={!!errors.password}
               helperText={errors.password?.message}
@@ -140,11 +140,11 @@ const LoginPage = () => {
                 mt: 3,
                 mb: 2,
                 py: 1.5,
-                textTransform: 'none',
-                fontSize: '1rem',
+                textTransform: "none",
+                fontSize: "1rem",
               }}
             >
-              {isSubmitting ? 'Connexion...' : 'Sign In'}
+              {isSubmitting ? "Connexion..." : "Sign In"}
             </Button>
           </Box>
         </Box>
@@ -154,6 +154,17 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
+//revoir l'architecture du style
+//utiliser mui a la place du css
+//refaire tout le css avec mui
+//refactor pour arrow functions
+//envoyer les api et url en env
+//revoir les namig en precis max
+//revoir bien ls jwt
+//no ANY
+//voir les bibliotheque pour un surplus de states
+//revoir comment faire pour faire sans preventdefault
 
 //check responsive
 //apprendre bien rem

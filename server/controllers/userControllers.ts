@@ -1,6 +1,6 @@
-import type { FastifyRequest, FastifyReply } from 'fastify';
-import { addUserService, checkUserService } from '../services/userServices.js';
-import type { User } from '../types/user.ts';
+import type { FastifyRequest, FastifyReply } from "fastify";
+import { addUserService, checkUserService } from "../services/userServices.js";
+import type { User } from "../types/user.ts";
 
 interface AddUserBody {
   user: User;
@@ -16,11 +16,11 @@ const addUserController = async (
   try {
     const { user } = request.body;
     await addUserService(user);
-    reply.status(201).send('user added successfully');
+    reply.status(201).send("user added successfully");
   } catch (error: unknown) {
     request.log.error(error);
     const errorMsg =
-      error instanceof Error ? error.message : 'An error occurred';
+      error instanceof Error ? error.message : "An error occurred";
     console.error(errorMsg);
   }
 };
@@ -37,25 +37,25 @@ const checkUserController = async (
     const payload = { username };
     const token = request.server.jwt.sign(payload);
     return reply
-      .setCookie('token', token, {
-        path: '/',
+      .setCookie("token", token, {
+        path: "/",
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
         maxAge: 3600 * 24,
       })
       .status(200)
       .send({
-        message: 'User logged in successfully',
+        message: "User logged in successfully",
         user: { username },
       });
   } catch (error: unknown) {
     request.log.error(error);
     const errorMsg =
-      error instanceof Error ? error.message : 'An error occurred';
+      error instanceof Error ? error.message : "An error occurred";
     console.error(errorMsg);
   }
-  return reply.status(500).send({ error: 'Internal Server Error' });
+  return reply.status(500).send({ error: "Internal Server Error" });
 };
 
 export { addUserController, checkUserController };
