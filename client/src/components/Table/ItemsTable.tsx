@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useInventory } from '../contexts/InventoryContext';
-import ItemForm from './ItemForm';
-import type { InventoryItem } from '../data/itemsData';
+import { useInventory } from '../../contexts/InventoryContext';
+import ItemForm from '../Form/ItemForm';
+import type { InventoryItem } from './tableTypes.js';
 import {
   Table,
   TableBody,
@@ -17,7 +17,6 @@ import {
   Dialog,
 } from '@mui/material';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
-
 
 const ItemsTable = () => {
   const { filteredItems, deleteItem } = useInventory();
@@ -39,7 +38,10 @@ const ItemsTable = () => {
         elevation={0}
         sx={{ p: 2, mb: 2, bgcolor: 'grey.50', borderRadius: 2 }}
       >
-        <Typography variant="body1" sx={{ fontWeight: 500 ,mt:'5%',mb:'-5%' , textAlign:'center'}}>
+        <Typography
+          variant="body1"
+          sx={{ fontWeight: 500, mt: '5%', mb: '-5%', textAlign: 'center' }}
+        >
           <Box component="span" sx={{ mr: 2 }}>
             <strong>Total Items:</strong> {totalItems}
           </Box>
@@ -102,7 +104,7 @@ const ItemsTable = () => {
                   <Stack
                     direction="row"
                     spacing={1}
-                    sx={{ justifyContent: 'center' }} 
+                    sx={{ justifyContent: 'center' }}
                   >
                     <IconButton
                       color="primary"
@@ -143,7 +145,5 @@ const ItemsTable = () => {
 
 export default ItemsTable;
 
-
 // no html tags
 // warning dry
-//

@@ -1,8 +1,7 @@
-import ItemsTable from '../components/ItemsTable';
+import ItemsTable from '../components/Table/ItemsTable';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import { InventoryProvider } from '../contexts/InventoryContext';
-
 
 const DashboardPage = () => {
   return (
@@ -19,4 +18,3 @@ const DashboardPage = () => {
 };
 
 export default DashboardPage;
-

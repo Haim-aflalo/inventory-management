@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import apiClient from "../api/apiClient";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import apiClient from '../../api/apiClient';
+import type { LoginForm } from './loginTypes.js';
 import {
   Box,
   TextField,
@@ -12,14 +13,9 @@ import {
   InputAdornment,
   IconButton,
   Alert,
-} from "@mui/material";
-
-import { Visibility, VisibilityOff, Login } from "@mui/icons-material";
-
-interface LoginForm {
-  username: string;
-  password: string;
-}
+} from '@mui/material';
+import { Visibility, VisibilityOff, Login } from '@mui/icons-material';
+import { loginStyle } from './loginStyle.js';
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -35,50 +31,28 @@ const LoginPage = () => {
   const handleAuthSubmit = async (data: LoginForm) => {
     try {
       setLoginError(null);
-      const authResponse = await apiClient.post("/users/login", data);
+      const authResponse = await apiClient.post('/users/login', data);
       if (authResponse.status === 200) {
-        navigate("/dashboard");
+        navigate('/dashboard');
       }
     } catch (error: unknown) {
       const errorMsg =
-        error instanceof Error ? error.message : "An error occurred";
+        error instanceof Error ? error.message : 'An error occurred';
       console.error(errorMsg);
-      setLoginError("username or password missing are incorect");
+      setLoginError('username or password missing are incorect');
     }
   };
 
   return (
-    <Container
-      component="main"
-      maxWidth="xs"
-      sx={{
-        marginTop: (theme) => theme.spacing(20),
-      }}
-    >
-      <Paper
-        elevation={3}
-        sx={{
-          marginTop: (theme) => theme.spacing(8),
-          padding: 4,
-          borderRadius: 2,
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography
-            component="h1"
-            variant="h5"
-            sx={{ mb: 3, fontWeight: 700 }}
-          >
+    <Container component="main" maxWidth="xs" sx={loginStyle.containerSx}>
+      <Paper sx={loginStyle.paperSx}>
+        <Box sx={loginStyle.boxSx}>
+          <Typography component="h1" variant="h5" sx={loginStyle.typographySx}>
             Login
           </Typography>
+
           {loginError && (
-            <Alert severity="error" sx={{ width: "100%", mb: 2 }}>
+            <Alert severity="error" sx={loginStyle.loginErrorSx}>
               {loginError}
             </Alert>
           )}
@@ -86,11 +60,11 @@ const LoginPage = () => {
             component="form"
             onSubmit={handleSubmit(handleAuthSubmit)}
             noValidate
-            sx={{ width: "100%" }}
+            sx={loginStyle.boxFormSx}
           >
             <TextField
-              {...register("username", {
-                required: "username is required",
+              {...register('username', {
+                required: 'username is required',
               })}
               margin="normal"
               required
@@ -103,14 +77,14 @@ const LoginPage = () => {
             />
 
             <TextField
-              {...register("password", {
-                required: "password is required",
+              {...register('password', {
+                required: 'password is required',
               })}
               margin="normal"
               required
               fullWidth
               label="Password"
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? 'text' : 'password'}
               autoComplete="current-password"
               error={!!errors.password}
               helperText={errors.password?.message}
@@ -136,15 +110,9 @@ const LoginPage = () => {
               variant="contained"
               disabled={isSubmitting}
               startIcon={<Login />}
-              sx={{
-                mt: 3,
-                mb: 2,
-                py: 1.5,
-                textTransform: "none",
-                fontSize: "1rem",
-              }}
+              sx={loginStyle.submitBtnSx}
             >
-              {isSubmitting ? "Connexion..." : "Sign In"}
+              {isSubmitting ? 'Connexion...' : 'Sign In'}
             </Button>
           </Box>
         </Box>
@@ -165,7 +133,6 @@ export default LoginPage;
 //no ANY
 //voir les bibliotheque pour un surplus de states
 //revoir comment faire pour faire sans preventdefault
-
 //check responsive
 //apprendre bien rem
 //aprendre les variables COMME IL FAUT en css

@@ -1,8 +1,9 @@
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import type { SubmitHandler } from "react-hook-form";
-import { useInventory } from "../contexts/InventoryContext";
-import type { InventoryItem } from "../data/itemsData";
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import type { SubmitHandler } from 'react-hook-form';
+import { useInventory } from '../../contexts/InventoryContext';
+import type { ItemFormProps, ItemFormData } from './formtypes.js';
+
 import {
   TextField,
   Button,
@@ -10,18 +11,9 @@ import {
   DialogContent,
   DialogActions,
   Stack,
-} from "@mui/material";
-import { itemFormStyles } from "../styles/muiStyle";
-interface ItemFormData {
-  name: string;
-  quantity: number;
-  price: number;
-}
-
-interface ItemFormProps {
-  closeForm: () => void;
-  initialData?: InventoryItem | null;
-}
+} from '@mui/material';
+import { itemFormStyle } from './formStyles.js';
+import { nanoid } from 'nanoid';
 
 const ItemForm = ({ closeForm, initialData }: ItemFormProps) => {
   const { addItem, editItem } = useInventory();
@@ -38,7 +30,7 @@ const ItemForm = ({ closeForm, initialData }: ItemFormProps) => {
     if (initialData) {
       reset(initialData);
     } else {
-      reset({ name: "", quantity: 0, price: 0 });
+      reset({ name: '', quantity: 0, price: 0 });
     }
   }, [initialData, reset]);
 
@@ -47,7 +39,7 @@ const ItemForm = ({ closeForm, initialData }: ItemFormProps) => {
       editItem({ id: initialData.id, ...data });
     } else {
       addItem({
-        id: Date.now().toString(),//! This is a simple way to generate a unique ID. In a real app, you'd want something more robust.
+        id: nanoid(),
         ...data,
       });
     }
@@ -57,15 +49,15 @@ const ItemForm = ({ closeForm, initialData }: ItemFormProps) => {
 
   return (
     <>
-      <DialogTitle sx={itemFormStyles.dialogTitleStyle}>
-        {isEditMode ? "Edit Product" : "Add New Product"}
+      <DialogTitle sx={itemFormStyle.dialogTitleStyle}>
+        {isEditMode ? 'Edit Product' : 'Add New Product'}
       </DialogTitle>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent dividers>
-          <Stack spacing={3} sx={itemFormStyles.stackStyle}>
+          <Stack spacing={3} sx={itemFormStyle.stackStyle}>
             <TextField
-              {...register("name", { required: "Name is required" })}
+              {...register('name', { required: 'Name is required' })}
               label="Item Name"
               fullWidth
               error={!!errors.name}
@@ -74,9 +66,9 @@ const ItemForm = ({ closeForm, initialData }: ItemFormProps) => {
             />
 
             <TextField
-              {...register("quantity", {
-                required: "Quantity is required",
-                min: { value: 0, message: "Cannot be negative" },
+              {...register('quantity', {
+                required: 'Quantity is required',
+                min: { value: 0, message: 'Cannot be negative' },
                 valueAsNumber: true,
               })}
               label="Quantity"
@@ -87,14 +79,14 @@ const ItemForm = ({ closeForm, initialData }: ItemFormProps) => {
             />
 
             <TextField
-              {...register("price", {
-                required: "Price is required",
-                min: { value: 0, message: "Cannot be negative" },
+              {...register('price', {
+                required: 'Price is required',
+                min: { value: 0, message: 'Cannot be negative' },
                 valueAsNumber: true,
               })}
               label="Price ($)"
               type="number"
-              slotProps={{ htmlInput: { step: "0.01" } }}
+              slotProps={{ htmlInput: { step: '0.01' } }}
               fullWidth
               error={!!errors.price}
               helperText={errors.price?.message}
@@ -112,7 +104,7 @@ const ItemForm = ({ closeForm, initialData }: ItemFormProps) => {
             color="primary"
             sx={{ px: 4 }}
           >
-            {isEditMode ? "Save Changes" : "Confirm Add"}
+            {isEditMode ? 'Save Changes' : 'Confirm Add'}
           </Button>
         </DialogActions>
       </form>
@@ -121,6 +113,5 @@ const ItemForm = ({ closeForm, initialData }: ItemFormProps) => {
 };
 
 export default ItemForm;
-
 
 //learn mui with folders separate

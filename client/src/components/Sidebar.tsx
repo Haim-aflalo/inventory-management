@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Box, Drawer, Button, Divider, Dialog } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
-import ItemForm from './ItemForm';
+import ItemForm from './Form/ItemForm';
 
 const drawerWidth = 240;
 
